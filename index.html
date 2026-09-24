@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <title>Purchasing Camera Test</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    button {
+      font-size: 20px;
+      padding: 15px 25px;
+    }
+
+    video {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 20px;
+      background: black;
+    }
+
+    #result {
+      margin-top: 20px;
+      white-space: pre-wrap;
+      font-size: 16px;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>Purchasing Camera Test</h2>
+
+<button onclick="startCamera()">
+  OPEN CAMERA
+</button>
+
+<video
+  id="video"
+  autoplay
+  playsinline
+  muted>
+</video>
+
+<div id="result"></div>
+
+<script>
+
+async function startCamera() {
+
+  const result =
+    document.getElementById("result");
+
+  result.innerText =
+    "Secure Context: " +
+    window.isSecureContext +
+    "\ngetUserMedia: " +
+    !!(
+      navigator.mediaDevices &&
+      navigator.mediaDevices.getUserMedia
+    );
+
+  try {
+
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        audio: false,
+        video: {
+          facingMode: {
+            ideal: "environment"
+          }
+        }
+      });
+
+    document.getElementById("video").srcObject =
+      stream;
+
+    result.innerText +=
+      "\n\nCAMERA SUCCESS";
+
+  } catch (err) {
+
+    result.innerText +=
+      "\n\nCAMERA ERROR" +
+      "\nName: " + err.name +
+      "\nMessage: " + err.message;
+  }
+}
+
+</script>
+
+</body>
+</html>
